@@ -1,0 +1,58 @@
+﻿
+@page "/cambiomoneda"
+@rendermode InteractiveServer
+
+<h3>Cambio Moneda</h3>
+
+<div class="container">
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Pesos</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" @bind="pesos"  />
+        </div>
+    </div>
+
+        <button class="btn btn-primary mb-3" @onclick="Convertir">Convertir</button>
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Dólares</label>
+        <div class="col-sm-10">
+            <input class="form-control bg-light" value="@dolares" readonly />
+        </div>
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Euros</label>
+        <div class="col-sm-10">
+            <input class="form-control bg-light" value="@euros" readonly />
+        </div>
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Libras</label>
+        <div class="col-sm-10">
+        <input class="form-control bg-light" value="@libras" readonly/>
+        </div>
+    </div>
+</div>
+
+@code {
+    int pesos = 0;
+
+    double dolares = 0;
+    double euros = 0;
+    double libras = 0;
+
+    double valorDeDolar = 17.90;
+    double valorDeEuro = 20.70;
+    double valorDeLibra = 23.88;
+
+    void Convertir()
+    {
+        dolares = Math.Round(pesos / valorDeDolar, 2);
+        euros = Math.Round(pesos / valorDeEuro, 2);
+        libras = Math.Round(pesos / valorDeLibra, 2);
+
+    }
+}
