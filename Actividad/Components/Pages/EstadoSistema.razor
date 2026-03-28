@@ -1,0 +1,62 @@
+﻿@if (CodigoEstado == 200) 
+{
+    <div class="alert alert-success">
+        <p>Sistema Operacional</p>
+
+    </div>
+}
+else if (CodigoEstado == 404)
+{
+    <div class="alert alert-warning">
+        <p>Recurso No Encontrado</p>
+    </div>
+}
+else if (CodigoEstado == 500)
+{
+    <div class="alert alert-danger">
+        <p>Error Interno del Servidor</p>
+    </div>
+}
+else
+{
+    <div class="alert alert-dark">
+        <p>Estado Desconocido</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int CodigoEstado { get; set; }
+
+}
+
+@* <div class="@_class">
+    <p>@_letrero</p>
+</div>
+
+@code {
+    [Parameter]
+    public int CodigoEstado { get; set; }
+    private string _class = "alert alert-dark";
+    private string _letrero = "Estado Desconocido";
+
+    protected override void OnParametersSet()
+    {
+        switch (CodigoEstado)
+        {
+            case 200:
+                _class = "alert alert-success";
+                _letrero = "Sistema Operacional";
+                break;
+            case 404:
+                _class = "alert alert-warning";
+                _letrero = "Recurso No Encontrado";
+                break;
+            case 500:
+                _class = "alert alert-danger";
+                _letrero = "Error Interno del Servidor";
+                break;
+        }
+    }  
+}
+ *@

@@ -37,6 +37,17 @@
     </div>
 </div>
 
+<EstadoSistema CodigoEstado="200"/>
+<EstadoSistema CodigoEstado="404"/>
+<EstadoSistema CodigoEstado="500"/>
+<EstadoSistema CodigoEstado="300"/>
+<EstadoSistema CodigoEstado="404"/>
+<EstadoSistema CodigoEstado="200"/>
+<EstadoSistema CodigoEstado="500"/>
+<EstadoSistema CodigoEstado="100"/>
+
+
+
 @code {
     int pesos = 0;
 
@@ -53,6 +64,5 @@
         dolares = Math.Round(pesos / valorDeDolar, 2);
         euros = Math.Round(pesos / valorDeEuro, 2);
         libras = Math.Round(pesos / valorDeLibra, 2);
-
     }
 }

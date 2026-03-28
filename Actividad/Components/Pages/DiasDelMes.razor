@@ -1,0 +1,71 @@
+﻿@page "/diasdelmes"
+@rendermode InteractiveServer
+
+<h3>Conocer los días del mes</h3>
+
+<div class="container">
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Mes</label>
+        <div class="col-sm-10">
+            <input type="number" @bind="mes" />
+        </div>
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Año</label>
+        <div class="col-sm-10">
+            <input type="number" @bind="año" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" @onclick="Calcular">Calcular</button>
+
+    <p style="margin-top: 20px; font-size:25px">@resultado</p>
+</div>
+
+
+@code {
+    int mes;
+    int año;
+    int dia;
+    string resultado = "";
+
+    void Calcular()
+    {
+        switch (mes)
+        {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                dia = 31;
+                break;
+
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                dia = 30;
+                break;
+
+            case 2:
+                if (año % 4 == 0 && año % 100 != 0 || año % 400 == 0)
+                {
+                    dia = 29;
+                }
+                else
+                {
+                    dia = 28;
+                }
+                break;
+
+            default:
+                resultado = "Mes inválido";
+                return;
+    }
+        resultado = $"El mes {mes} del año {año} tiene {dia} días";
+    }
+} 
