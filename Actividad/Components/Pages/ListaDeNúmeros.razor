@@ -1,0 +1,81 @@
+﻿@page "/lista-de-numeros"
+@rendermode InteractiveServer
+
+<h3>Lista de números</h3>
+
+<div class="container">
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Número 1</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" @bind="num1" /> @*enlazar variables*@
+        </div>
+    </div>
+
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Número 2</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" @bind="num2"/>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" @onclick="Calcular">Calcular</button>
+
+</div>
+    
+<div>
+
+    <div class="mt-3">
+        <h4>Pares</h4>
+        @foreach (var num in listaPares)
+        {
+            <div>@num</div>
+        }
+    </div>
+
+    <div>
+        <h4>Impares</h4>
+        @foreach (var num in listaInpares)
+        {
+            <div>@num</div>
+        }
+    </div>
+</div>
+  
+
+@code {
+    int num1;
+    int num2;
+    int mayor; 
+    int menor;
+    List<int> listaPares = new List<int>();
+    List<int> listaInpares = new List<int>();
+
+    void Calcular()
+    {
+        if (num1 > num2)
+        {
+            mayor = num1;
+            menor = num2;
+        } else
+        {
+            mayor = num2;
+            menor = num1;
+        }
+
+        listaPares.Clear();
+        listaInpares.Clear();
+
+        for (int i = menor; i <= mayor; i++)
+        {
+            if (i % 2 == 0)
+            {
+                listaPares.Add(i);
+            } else
+            {
+                listaInpares.Add(i);
+            }
+        }
+
+    }
+}

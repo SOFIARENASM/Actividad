@@ -1,0 +1,96 @@
+﻿@page "/titulos-de-canciones"
+<h3>Títulos de Canciones</h3>
+@rendermode InteractiveServer
+
+<div class="container">
+
+<label>Canción</label>
+<input type="text" @bind="cancion" />
+
+ @if (editar)
+ {
+     <div>
+        <button class="btn btn-primary btn-sm mt-3" @onclick="Guardar">Guardar</button>
+        <button class="btn btn-warning btn-sm mt-3" @onclick="Cancelar">Cancelar</button>
+     </div>
+ } else
+ {
+     <div class="mt-3">
+        <button class="btn btn-primary btn-sm" @onclick="Agregar">Agregar</button>
+     </div>
+ }
+
+        <input class="mt-3 mb-3" @bind="buscar" @bind:event="oninput" placeholder="Filtar"/>
+        <button class="btn btn-primary btn-sm ms-3" @onclick="() => Ordenar(true)">A-Z</button>
+        <button class="btn btn-primary btn-sm" @onclick="() => Ordenar(false)">Z-A</button>
+
+    <div>
+    @foreach (var cancion in listaCanciones)
+    {
+            if (cancion.ToLower().Contains(buscar.ToLower()))
+            {
+                <div class="mb-2">
+                    @cancion
+                <button class="btn btn-secondary btn-sm" @onclick="() => Editar(cancion)">Editar</button>
+                <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(cancion)">Eliminar</button>
+                </div>               
+            }
+    }
+    </div>
+</div>
+
+@code {
+    string cancion = "";
+    string buscar = "";
+    List<string> listaCanciones = new List<string>();
+    bool editar = false;
+    string cancionVieja = "";
+
+    void Agregar()
+    {
+        if (cancion != "" && !listaCanciones.Contains(cancion))
+        {
+            listaCanciones.Add(cancion);
+            cancion = "";
+        }
+    }
+
+    void Eliminar(string cancion)
+    {
+        listaCanciones.Remove(cancion);
+    }
+
+    void Ordenar(bool ascendente)
+    {
+        if (ascendente)
+        {
+            listaCanciones = listaCanciones.OrderBy(c => c).ToList();
+        } else
+        {
+            listaCanciones = listaCanciones.OrderByDescending(c => c).ToList();
+        }
+    }
+
+    void Editar(string tituloCancion)
+    {
+        cancion = tituloCancion;
+        cancionVieja = tituloCancion;
+        editar = true;
+    }
+
+    void Guardar()
+    {
+        int indice = listaCanciones.IndexOf(cancionVieja);
+        if (indice != -1)
+        {
+            listaCanciones[indice] = cancion;
+        }
+        Cancelar();
+    }
+
+    void Cancelar()
+    {
+        cancion = "";
+        editar = false;
+    }
+}

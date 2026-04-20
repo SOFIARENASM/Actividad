@@ -1,0 +1,92 @@
+﻿@page "/prueba"
+@rendermode InteractiveServer
+
+<h3>Mis Canciones</h3>
+
+@* --- 1. AGREGAR O MODIFICAR --- *@
+<input @bind="nuevoTitulo" placeholder="Nombre de la canción" />
+
+@if (esEdicion)
+{
+    <button @onclick="GuardarCambio">Guardar Cambio</button>
+    <button @onclick="Cancelar">Cancelar</button>
+}
+else
+{
+    <button @onclick="Agregar">Agregar</button>
+}
+
+<hr />
+
+@* --- 2. FILTRAR Y ORDENAR --- *@
+<input @bind="busqueda" @bind:event="oninput" placeholder="Filtrar..." />
+<button @onclick="() => Ordenar(true)">A-Z</button>
+<button @onclick="() => Ordenar(false)">Z-A</button>
+
+<hr />
+
+@* --- 3. LISTA --- *@
+<ul>
+    @foreach (var cancion in listaCanciones.Where(c => c.Contains(busqueda, StringComparison.OrdinalIgnoreCase)))
+    {
+        <li>
+            @cancion
+            <button @onclick="() => PrepararParaEditar(cancion)">Editar</button>
+            <button @onclick="() => Borrar(cancion)">Eliminar</button>
+        </li>
+    }
+</ul>
+
+@code {
+    List<string> listaCanciones = new() { "Yellow Submarine", "The Scientist" };
+    string nuevoTitulo = "";
+    string busqueda = "";
+
+    // Variables para la edición
+    bool esEdicion = false;
+    string cancionAntigua = "";
+
+    void Agregar()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevoTitulo))
+        {
+            listaCanciones.Add(nuevoTitulo);
+            nuevoTitulo = "";
+        }
+    }
+
+    void Borrar(string titulo) => listaCanciones.Remove(titulo);
+
+    // --- LÓGICA DE ORDENAR ---
+    void Ordenar(bool ascendente)
+    {
+        if (ascendente)
+            listaCanciones = listaCanciones.OrderBy(c => c).ToList();
+        else
+            listaCanciones = listaCanciones.OrderByDescending(c => c).ToList();
+    }
+
+    // --- LÓGICA DE MODIFICAR ---
+    void PrepararParaEditar(string titulo)
+    {
+        nuevoTitulo = titulo;     // Ponemos el nombre en el input
+        cancionAntigua = titulo;  // Guardamos el nombre original para saber cuál cambiar
+        esEdicion = true;         // Cambiamos el botón de "Agregar" por "Guardar"
+    }
+
+    void GuardarCambio()
+    {
+        int indice = listaCanciones.IndexOf(cancionAntigua); // Buscamos dónde estaba
+        if (indice != -1)
+        {
+            listaCanciones[indice] = nuevoTitulo; // Reemplazamos por el nuevo texto
+        }
+        Cancelar(); // Limpiamos todo
+    }
+
+    void Cancelar()
+    {
+        nuevoTitulo = "";
+        esEdicion = false;
+    }
+}

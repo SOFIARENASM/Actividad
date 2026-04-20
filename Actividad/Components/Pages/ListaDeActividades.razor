@@ -1,0 +1,44 @@
+﻿@page "/lista-actividades"
+<h3>Lista de Actividades</h3>
+@rendermode InteractiveServer
+
+<div class="container">
+    <div class="row mb-3 align-items-center">
+        <label class="col-sm 2 col-form-label">Actividad</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" @bind="act"/>
+        </div>
+    </div>
+<button class="btn btn-primary" @onclick="Agregar">Agregar</button>
+
+@if (listaActividades.Count() > 0)
+{
+    <h5 class="mt-4">Actividades por realizar</h5>
+}
+@foreach (var actividad in listaActividades)
+{
+    <div>@actividad
+    <button class="btn btn-danger btn-sm ms-3 mb-2" @onclick="() => Eliminar(actividad)">Eliminar</button>
+    </div>
+}
+</div>
+
+
+@code {
+    string act = "";
+    List<string> listaActividades = new List<string>();
+
+    void Agregar()
+    {
+        if (act !="" && !listaActividades.Contains(act))
+        {
+            listaActividades.Add(act);
+            act = "";    
+        }   
+    }
+
+    void Eliminar(string actividad)
+    {
+        listaActividades.Remove(actividad);
+    }
+}
